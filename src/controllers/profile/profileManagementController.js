@@ -1,7 +1,7 @@
-import UserModel from "../../../models/userModel";
-import responseHandler from "../../utils/responseHandler";
+import UserModel from '../../models/userModel.js'
+import responseHandler from "../../helpers/responseHandlerHelper.js";
 
-export async function profileManagementController(req, res) {
+ async function profileManagementController(req, res) {
     const { name, email, image, about } = req.body;
 
     if (!email) return responseHandler(res, 400, false, "Email is required");
@@ -23,3 +23,5 @@ export async function profileManagementController(req, res) {
         console.error("Error updating profile:", error)
     }
 }
+
+export default profileManagementController;

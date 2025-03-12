@@ -1,6 +1,6 @@
 import UserModel from "../../models/userModel.js";
-import { verifyOTP } from "../../utils/otpServices.js";
-import { generateToken } from "../../utils/tokenGenerator.js";
+import { verifyOTP } from "../../helpers/otpHelper.js";
+import { generateToken } from "../../utils/tokenGeneratorUtil.js";
 
 const emailVerificationController = async (req, res) => {
   const { email, otp } = req.body;

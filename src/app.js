@@ -3,13 +3,13 @@ import CORS from "cors";
 import pino from "pino-http";
 
 import AuthRouter from "./routes/authRoute.js";
-import logger from "./utils/logger.js";
-import errorHandler from "./middlewares/errorHandler.js";
+import logger from "./utils/loggerUtil.js";
+import errorHandler from "./helpers/errorHandlerHelpers.js";
 import ProfileRoute from "./routes/profileRoute.js";
 import IntegrationRoute from "./routes/integrationRoute.js";
 import AutomationRoute from "./routes/automationRoute.js";
 import LogRoute from "./routes/logRoutes.js";
-import UserVerifyJWT from './middlewares/userVerifiy.js'
+import authMiddlewares from "./middlewares/authMiddlewares.js";
 
 const app = express();
 
@@ -28,9 +28,9 @@ app.use(CORS());
 
 // Route Declration
 app.use('/api/v1/auth',AuthRouter); 
-app.use('/api/v1/profile',UserVerifyJWT,ProfileRoute); 
-app.use('/api/v1/integration',UserVerifyJWT,IntegrationRoute); 
-app.use('/api/v1/automation', UserVerifyJWT,AutomationRoute); 
+app.use('/api/v1/profile',authMiddlewares,ProfileRoute); 
+app.use('/api/v1/integration',authMiddlewares,IntegrationRoute); 
+app.use('/api/v1/automation', authMiddlewares,AutomationRoute); 
 
 // Logs Router for testing
 app.use('/api/v1/automation',LogRoute); 

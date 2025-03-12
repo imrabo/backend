@@ -1,6 +1,6 @@
 import UserModel from "../../models/userModel.js";
 import sendOTPEmail from "../../services/emailSending.js";
-import { generateOTP, hashOTP } from "../../utils/otpServices.js";
+import { generateOTP, hashOTP } from "../../helpers/otpHelper.js";
 
 
 const emailLogInController = async (req, res) => {

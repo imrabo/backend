@@ -2,7 +2,7 @@ import { Router } from "express";
 import emailLogInController from "../controllers/auth/emailLogInController.js";
 import emailSignUpController from "../controllers/auth/emailSignUpController.js";
 import emailVerificationController from "../controllers/auth/emailVerificationController.js";
-import { validateEmailLogin, validateEmailSignUp, validateEmailVerification } from "../middlewares/authValidatore.js";
+import { validateEmailLogin, validateEmailSignUp, validateEmailVerification } from '../validators/index.js';
 
 const AuthRouter = Router();
 

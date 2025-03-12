@@ -1,10 +1,10 @@
 import { Router } from "express";
-import emailLogInController from "../controllers/auth/emailLogInController.js";
+import  profileManagementController  from "../controllers/profile/profileManagementController.js";
 
 
 const ProfileRoute = Router();
 
-ProfileRoute.post("/:useremail", emailLogInController);
+ProfileRoute.post("/update", profileManagementController);
 
 export default ProfileRoute;
 

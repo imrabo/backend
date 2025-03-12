@@ -1,8 +1,8 @@
 
-import responseHandler from "../utils/responseHandler.js";
-import { verifyToken } from "../utils/tokenGenerator.js";
+import responseHandler from "../helpers/responseHandlerHelper.js";
+import { verifyToken } from "../utils/tokenGeneratorUtil.js";
 
-const userVerifyJWT = (req, res, next) => {
+const authMiddlewares = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -20,4 +20,4 @@ const userVerifyJWT = (req, res, next) => {
   }
 };
 
-export default userVerifyJWT;
+export default authMiddlewares;
