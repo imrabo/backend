@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon src/server.js",
+    "deploy": "node src/server.js",
     "build": "babel src -d dist",
     "lint": "eslint . --ext .js",
     "format": "prettier --write .",
