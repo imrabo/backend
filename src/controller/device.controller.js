@@ -44,9 +44,10 @@ export async function getDevicesController(req, res) {
 // 📌 3️⃣ Get Single Device by ID
 export async function getDeviceByIdController(req, res) {
     const { deviceId } = req.params;
+    const userId = req.userId;
 
     try {
-        const device = await DeviceModel.findOne({ _id: deviceId, userId: req.userId }).lean();
+        const device = await DeviceModel.findOne({ _id: deviceId, userId: userId });
         if (!device) return res.status(404).json({ msg: "Device not found" });
 
         res.status(200).json({ device });
