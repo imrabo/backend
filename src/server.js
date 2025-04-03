@@ -1,6 +1,7 @@
-import dotenv from "dotenv/config";
+import "dotenv/config";
 import connectDB from './config/database.js';
 import app from './app.js';
+import { server } from "./config/socket.js";
 
 
 
@@ -24,8 +25,8 @@ app.get("/health", async (req, res) => {
 });
 
 // ✅ Start Server After DB Connection is Ready
-app.listen(port, () =>
-    console.log(`🚀 Server Started at http://localhost:${port}`)
-);
+server.listen(port, () => {
+    console.log(`Express server running on http://localhost:${port}`);
+});
 
 

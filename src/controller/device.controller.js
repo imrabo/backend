@@ -1,8 +1,8 @@
-import DeviceModel from "../model/device.model.js";
+import DeviceModel from "../model/device.model.js"; // Ensure correct path
 import UserModel from "../model/user.model.js";
 import { validationResult } from "express-validator";
 
-// 📌 1️⃣ Create (POST) Device
+// 📌 1️⃣ Create Device (POST)
 export async function postDeviceController(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
@@ -17,11 +17,11 @@ export async function postDeviceController(req, res) {
         const existingDevice = await DeviceModel.findOne({ userId, deviceName });
         if (existingDevice) return res.status(400).json({ msg: "Device already registered for this user" });
 
-        const newDevice = await DeviceModel.create({ userId, deviceName, deviceType });
+        const newDevice = new DeviceModel({ userId, deviceName, deviceType });
+        await newDevice.save();
 
         // Store device reference in user model
-        user.devices.push(newDevice._id);
-        await user.save();
+        await UserModel.findByIdAndUpdate(userId, { $push: { devices: newDevice._id } });
 
         res.status(201).json({ msg: "Device added successfully", device: newDevice });
     } catch (error) {
@@ -47,7 +47,7 @@ export async function getDeviceByIdController(req, res) {
     const userId = req.userId;
 
     try {
-        const device = await DeviceModel.findOne({ _id: deviceId, userId: userId });
+        const device = await DeviceModel.findOne({ _id: deviceId, userId });
         if (!device) return res.status(404).json({ msg: "Device not found" });
 
         res.status(200).json({ device });
@@ -63,11 +63,15 @@ export async function updateDeviceController(req, res) {
     const { deviceType, isActive, isTrusted } = req.body;
 
     try {
-        const updateData = { deviceType, isTrusted, lastUsed: new Date() };
+        // Construct update object dynamically
+        const updateData = {};
+        if (deviceType !== undefined) updateData.deviceType = deviceType;
+        if (isTrusted !== undefined) updateData.isTrusted = isTrusted;
         if (isActive !== undefined) {
             updateData.isActive = isActive;
             updateData.lastConnected = isActive ? new Date() : null;
         }
+        updateData.lastUsed = new Date();
 
         const updatedDevice = await DeviceModel.findOneAndUpdate(
             { _id: deviceId, userId: req.userId },

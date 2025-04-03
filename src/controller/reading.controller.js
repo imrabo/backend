@@ -8,7 +8,7 @@ readingRouter.post("/", async (req, res) => {
   try {
     // Extract deviceId from query parameters and other data from the request body
     const { deviceId } = req.query;
-    const { type, value, unit } = req.body;
+    const { data } = req.body;
 
     // Validate if deviceId is provided in query parameters
     if (!deviceId) {
@@ -22,7 +22,7 @@ readingRouter.post("/", async (req, res) => {
     }
 
     // Push new reading to the readings array
-    device.reading.push({ type, value, unit });
+    device.reading.push(data);
     await device.save();
 
     // Return success response

@@ -9,12 +9,21 @@ const DeviceSchema = new mongoose.Schema({
   isActive: { type: Boolean, default: false },
   lastConnected: { type: Date, default: null },
   isTrusted: { type: Boolean, default: false },
+  apiURL: { type: String, required: true },
+  webSocketURL: { type: String, required: true },
+  mqttURL: { type: String, required: true },
   reading: [{
-    type: { type: String, required: true }, // Type of reading (e.g., temperature, humidity, etc.)
     timestamp: { type: Date, default: Date.now },
-    value: { type: mongoose.Schema.Types.Mixed, required: true },
-    unit: { type: String, required: true }
-  }] // Store only a single reading instead of an array
+    data: { type: mongoose.Schema.Types.Mixed, required: true },
+  }] 
+}, {timestamps:true});
+
+DeviceSchema.pre("save", function (next) {
+  const baseDomain = "example.com";
+  this.apiURL = `https://imrabo.onrender.com/iot?deviceId=${this.device_id}`;
+  this.webSocketURL = `wss://imrabo.onrender.com/iot?deviceId=${this.device_id}`;
+  this.mqttURL = `mqtt://imrabo.onrender.com/mqtt/pub?topic=${this.device_id}`;
+  next();
 });
 
 const DeviceModel = mongoose.model('Devices', DeviceSchema);

@@ -12,6 +12,7 @@ import {
 import { authenticateUser } from './middleware/authicate.middleware.js';
 import { handleValidationErrors } from './middleware/validation.middleware.js';
 import readingRouter from './controller/reading.controller.js';
+import mqttRouter from './routes/mqtt.route.js';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/automation',authenticateUser,handleValidationErrors,automationRouter);
 app.use('/integration',authenticateUser ,integrationRouter);
 app.use('/device', authenticateUser , deviceRouter);
 app.use('/iot', readingRouter);
+app.use('/mqtt', mqttRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
