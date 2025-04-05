@@ -15,7 +15,7 @@ const DeviceSchema = new mongoose.Schema(
     reading: [
       {
         timestamp: { type: Date, default: Date.now },
-        data: { type: mongoose.Schema.Types.Mixed, required: true },
+        data: { type: Object, required: true },
       },
     ],
   },
