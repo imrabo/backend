@@ -6,30 +6,36 @@ const readingRouter = express.Router();
 // Add a reading to an existing device
 readingRouter.post("/", async (req, res) => {
   try {
-    // Extract deviceId from query parameters and other data from the request body
     const { deviceId } = req.query;
     const { data } = req.body;
 
-    // Validate if deviceId is provided in query parameters
+    if (!data) {
+      return res.status(400).json({ message: "Data is required in body parameters" });
+    }
+
     if (!deviceId) {
       return res.status(400).json({ message: "Device ID is required in query parameters" });
     }
 
-    // Find the device by deviceId
     const device = await DeviceModel.findById(deviceId);
     if (!device) {
       return res.status(404).json({ message: "Device not found" });
     }
 
-    // Push new reading to the readings array
     device.reading.push(data);
     await device.save();
 
-    // Return success response
-    res.status(201).json({ message: "Reading added successfully", device });
+    return res.status(201).json({
+      message: "Reading added successfully",
+      device,
+    });
+
   } catch (error) {
-    // Return error response
-    res.status(500).json({ message: "Error adding reading", error: error.message });
+    console.error("Error adding reading:", error);
+    return res.status(500).json({
+      message: "Internal server error while adding reading",
+      error: error.message,
+    });
   }
 });
 

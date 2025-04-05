@@ -33,7 +33,7 @@ export async function postDeviceController(req, res) {
 // 📌 2️⃣ Get All Devices (For Logged-in User)
 export async function getDevicesController(req, res) {
     try {
-        const devices = await DeviceModel.find({ userId: req.userId }).lean();
+        const devices = await DeviceModel.find({ userId: req.userId });
         res.status(200).json({ devices });
     } catch (error) {
         console.error("❌ Error in getDevicesController:", error);
